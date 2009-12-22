@@ -6,15 +6,14 @@ TL.Data = TL_GetData()
 
 TL.Types = {
 	Bank = "Interface\\Minimap\\Tracking\\Banker",
+	Barber = "Interface\\BarberShop\\UI-Barbershop-Banner",
 	["Flight Master"] = "Interface\\Minimap\\Tracking\\Flightmaster",
 	ClassTrainer = "Interface\\Minimap\\Tracking\\Class",
 	Mailbox = "Interface\\Minimap\\Tracking\\Mailbox",
-	Portals = "",
+	Portals = "Interface\\AddOns\\TownLocator\\Portals",
 	Inn = "Interface\\Minimap\\Tracking\\Innkeeper",
-	PVP_Rewards = "",
-	Arena_Battlemasters = "",
-	Arena_Rewards = "",
-	["Higher Learning Books"] = "Interface\\Minimap\\Tracking\\Class",
+	Battlemasters = "Interface\\WorldStateFrame\\CombatSwords",
+	["Higher Learning Books"] = "Interface\\Minimap\\Tracking\\Profession",
 	-- Every profession
 	["Alchemy Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
 	["Blacksmithing Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
@@ -43,9 +42,16 @@ TL.Types = {
 
 function TL:SetPNJ(zoneName, x, y, type)	
 	continent, zone = Astronomer.ZoneCZ(zoneName)	
---~ 	Flightmaster icon for the test
+	--Flightmaster icon by default (shouldn't happen anymore)
 	local tex = self:GetTextureByType(type) or "Interface\\Minimap\\Tracking\\Flightmaster"
-	local icon, placed = Astronomer.NewZoneIcon(tex, 16, nil, continent, zone, x, y, true)
+	-- Because barbers rules 
+	local width = (type == "Barber" and 60) or 20
+	local height = (type == "Barber" and 30) or nil
+	local icon, placed = Astronomer.NewZoneIcon(tex, width, height, continent, zone, x, y)
+	if(type == "Higher Learning Books") then
+		-- Little hack to see where are those damned books
+		icon.icon:SetVertexColor(0,1,1)
+	end
 end
 
 function TL:GetTextureByType(type)
