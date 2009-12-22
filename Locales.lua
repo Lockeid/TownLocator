@@ -1,32 +1,32 @@
 local L = {}
 if GetLocale() == "frFR" then
 	-- Alliance
-	L.SW = "Hurlevent"
-	L.IF = "Forgefer"
+	L.Stormwind = "Hurlevent"
+	L.Ironforge = "Forgefer"
 	L.Exodar = "L'Exodar"
 	L.Darnassus = "Darnassus"
 	-- Horde
 	L.Orgrimmar = "Orgrimmar"
-	L.TB = "Les Pitons du Tonnerre"
-	L.UD = "Fossoyeuse"
-	L.SM = "Lune-d'argent"
+	L.ThunderBluff = "Les Pitons du Tonnerre"
+	L.Undercity = "Fossoyeuse"
+	L.SilverMoonCity = "Lune-d'argent"
 	-- Outland
-	L.ST = "Shattrath"
+	L.Shattrath = "Shattrath"
 	-- Northrend
 	L.Dalaran = "Dalaran"
 else 
 	-- Alliance
-	L.SW = "Stormwind City"
-	L.IF = "Ironforge"
+	L.Stormwind = "Shattrathormwind City"
+	L.Ironforge = "Ironforge"
 	L.Exodar = "The Exodar"
 	L.Darnassus = "Darnassus"
 	-- Horde
 	L.Orgrimmar = "Orgrimmar"
-	L.TB = "Thunder Bluff"
-	L.UD = "Undercity"
-	L.SM = "Silvermoon City"
+	L.ThunderBluff = "Thunder Bluff"
+	L.Undercity = "Undercity"
+	L.SilverMoonCity = "Silvermoon City"
 	-- Outland
-	L.ST = "Shattrath"
+	L.Shattrath = "Shattrath"
 	-- Northrend
 	L.Dalaran = "Dalaran"
 end

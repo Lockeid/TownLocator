@@ -1,7 +1,6 @@
 local TL = CreateFrame("Frame","TownLocator",UIParent)
 TL:SetScript("OnEvent", function(self,event,...) TL[event](self,...) end)
-TL:RegisterEvent"ADDON_LOADED"  --]]
---local TL = LibStub("AceAddon-3.0"):NewAddon("TownLocator")
+TL:RegisterEvent"ADDON_LOADED"
 TL.L = TL_GetLocalization()
 TL.Data = TL_GetData()
 
@@ -18,12 +17,12 @@ TL.Types = {
 	Arena_Rewards = ""
 }
 
-function TL:SetPNJ(zoneName, x, y, texture, type) 
-	x = x/100 
-	y = y/100 	
+function TL:SetPNJ(zoneName, x, y, type) 
+--~ 	x = x/100 
+--~ 	y = y/100 	
 	continent, zone = Astronomer.ZoneCZ(zoneName)	
-	local icon, placed = Astronomer.NewZoneIcon(texture, 16, nil, continent, zone, x, y, true)
-
+--~ 	Flightmaster icon for the test
+	local icon, placed = Astronomer.NewZoneIcon("Interface\\Minimap\\Tracking\\Flightmaster", 16, nil, continent, zone, x, y, true)
 end
 
 function TL:GetTextureByType(type)
@@ -33,14 +32,15 @@ end
 function TL:IterateData()
 	for k, value in pairs(TL.Data) do
 		local z = k
-		for idx, pnj in ipairs(value) do
-			local tex = TL:GetTextureByType(pnj.type)
-			TL:SetPNJ(z, pnj.xOff, pnj.yOff, tex)
+		print(z)
+		for type, point in pairs(value) do
+			for _, tbl in ipairs(point) do
+				TL:SetPNJ(z, tbl.xOff, tbl.yOff,type)
+			end
 		end
 	end
 end
 
---function TL:OnInitialize()
 function TL:ADDON_LOADED(addon) 
 	if addon ~= "TownLocator" then return end
 	TL:IterateData()
