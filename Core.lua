@@ -6,23 +6,46 @@ TL.Data = TL_GetData()
 
 TL.Types = {
 	Bank = "Interface\\Minimap\\Tracking\\Banker",
-	Fly = "Interface\\Minimap\\Tracking\\Flightmaster",
-	ClassTrainer = "Interface\\Minimap\\Tracking\\ClassTrainer",
-	ProfessionTrainer = "Interface\\Minimap\\Tracking\\ProfessionTrainer",
-	Mailbox = "",
+	["Flight Master"] = "Interface\\Minimap\\Tracking\\Flightmaster",
+	ClassTrainer = "Interface\\Minimap\\Tracking\\Class",
+	Mailbox = "Interface\\Minimap\\Tracking\\Mailbox",
 	Portals = "",
-	Innkeeper = "Interface\\Minimap\\Tracking\\Innkeeper",
+	Inn = "Interface\\Minimap\\Tracking\\Innkeeper",
 	PVP_Rewards = "",
 	Arena_Battlemasters = "",
-	Arena_Rewards = ""
+	Arena_Rewards = "",
+	["Higher Learning Books"] = "Interface\\Minimap\\Tracking\\Class",
+	-- Every profession
+	["Alchemy Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	["Blacksmithing Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	["Cooking Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	["Enchanting Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	["First Aid Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	["Fishing Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	["Herbalism Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	["Inscription Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	["Leatherworking Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	["Mining Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	["Skinning Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	["Tailoring Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
+	-- Every class
+	["Mage Trainer"] = "Interface\\Minimap\\Tracking\\Class",
+	["Warrior Trainer"] = "Interface\\Minimap\\Tracking\\Class",
+	["Warlock Trainer"] = "Interface\\Minimap\\Tracking\\Class",
+	["Rogue Trainer"] = "Interface\\Minimap\\Tracking\\Class",
+	["Priest Trainer"] = "Interface\\Minimap\\Tracking\\Class",
+	["Paladin Trainer"] = "Interface\\Minimap\\Tracking\\Class",
+	["Hunter Trainer"] = "Interface\\Minimap\\Tracking\\Class",
+	["Death Knight Trainer"] = "Interface\\Minimap\\Tracking\\Class",
+	["Shaman Trainer"] = "Interface\\Minimap\\Tracking\\Class",
+	["Druid Trainer"] = "Interface\\Minimap\\Tracking\\Class",
 }
 
-function TL:SetPNJ(zoneName, x, y, type) 
---~ 	x = x/100 
---~ 	y = y/100 	
+function TL:SetPNJ(zoneName, x, y, type)	
 	continent, zone = Astronomer.ZoneCZ(zoneName)	
 --~ 	Flightmaster icon for the test
-	local icon, placed = Astronomer.NewZoneIcon("Interface\\Minimap\\Tracking\\Flightmaster", 16, nil, continent, zone, x, y, true)
+	local tex = self:GetTextureByType(type) or "Interface\\Minimap\\Tracking\\Flightmaster"
+	local icon, placed = Astronomer.NewZoneIcon(tex, 16, nil, continent, zone, x, y, true)
 end
 
 function TL:GetTextureByType(type)
