@@ -3,16 +3,18 @@ TL:SetScript("OnEvent", function(self,event,...) TL[event](self,...) end)
 TL:RegisterEvent"ADDON_LOADED"
 TL.L = TL_GetLocalization()
 TL.Data = TL_GetData()
+local Astrolabe = DongleStub"Astrolabe-0.4"
+local theWorldMap = WorldMapDetailFrame
 
+-- Icons depending on the type
 TL.Types = {
-	Bank = "Interface\\Minimap\\Tracking\\Banker",
-	Barber = "Interface\\BarberShop\\UI-Barbershop-Banner",
+	["Bank"] = "Interface\\Minimap\\Tracking\\Banker",
+	["Barber"] = "Interface\\BarberShop\\UI-Barbershop-Banner",
 	["Flight Master"] = "Interface\\Minimap\\Tracking\\Flightmaster",
-	ClassTrainer = "Interface\\Minimap\\Tracking\\Class",
-	Mailbox = "Interface\\Minimap\\Tracking\\Mailbox",
-	Portals = "Interface\\AddOns\\TownLocator\\Portals",
-	Inn = "Interface\\Minimap\\Tracking\\Innkeeper",
-	Battlemasters = "Interface\\WorldStateFrame\\CombatSwords",
+	["Mailbox"] = "Interface\\Minimap\\Tracking\\Mailbox",
+	["Portals"] = "Interface\\AddOns\\TownLocator\\Portals",
+	["Inn"] = "Interface\\Minimap\\Tracking\\Innkeeper",
+	["Battlemasters"] = "Interface\\WorldStateFrame\\CombatSwords",
 	["Higher Learning Books"] = "Interface\\Minimap\\Tracking\\Profession",
 	-- Every profession
 	["Alchemy Trainer"] = "Interface\\Minimap\\Tracking\\Profession",
@@ -39,32 +41,68 @@ TL.Types = {
 	["Shaman Trainer"] = "Interface\\Minimap\\Tracking\\Class",
 	["Druid Trainer"] = "Interface\\Minimap\\Tracking\\Class",
 }
+ -- Returns the icon
+ function TL:GetTextureByType(type)
+	return TL.Types[type]
+end
 
-function TL:SetPNJ(zoneName, x, y, type)	
+-- Creates the minimap and map icon
+function TL:CreateIcons(type)
+	-- Minimap button
+	local minimap = CreateFrame("Button",nil,Minimap)
+	minimap:SetWidth((type == "Barber" and 60) or 20)
+	minimap:SetHeight((type == "Barber" and 30) or 20)
+	minimap.type = type
+	
+	minimap.icon = minimap:CreateTexture"BACKGROUND"
+	minimap.icon:SetTexture(self:GetTextureByType(type) or "Interface\\Minimap\\Tracking\\Flightmaster")
+	minimap.icon:SetPoint("CENTER",0,0)
+	minimap.icon:SetWidth((type == "Barber" and 60) or 20)
+	minimap.icon:SetHeight((type == "Barber" and 30) or 20)
+	
+	-- Map button
+	local map = CreateFrame("Button",nil,theWorldMap)
+	map:SetWidth((type == "Barber" and 60) or 20)
+	map:SetHeight((type == "Barber" and 30) or 20)
+	map.type = type
+	
+	map.icon = map:CreateTexture"BACKGROUND"
+	map.icon:SetTexture(self:GetTextureByType(type) or "Interface\\Minimap\\Tracking\\Flightmaster")
+	map.icon:SetPoint("CENTER",0,0)
+	map.icon:SetWidth((type == "Barber" and 60) or 20)
+	map.icon:SetHeight((type == "Barber" and 30) or 20)
+	
+	
+	return minimap, map
+end
+-- Creates the POI using Astrolabe
+function TL:SetPOI(zoneName, x, y, type)	
 	continent, zone = Astronomer.ZoneCZ(zoneName)	
 	--Flightmaster icon by default (shouldn't happen anymore)
 	local tex = self:GetTextureByType(type) or "Interface\\Minimap\\Tracking\\Flightmaster"
 	-- Because barbers rules 
 	local width = (type == "Barber" and 60) or 20
 	local height = (type == "Barber" and 30) or nil
-	local icon, placed = Astronomer.NewZoneIcon(tex, width, height, continent, zone, x, y)
+--~ 	local icon, placed = Astronomer.NewZoneIcon(tex, width, height, continent, zone, x, y)
+
+	-- Let's try without Astronomer
+	local minimap, map = CreateIcons(type)
+	Astrolabe:PlaceIconOnMinimap(minimap,continent,zone,x,y)
+	Astrolabe:PlaceIconOnWorldMap(theWorldFrame,map,continent,zone,x,y)
+		
 	if(type == "Higher Learning Books") then
 		-- Little hack to see where are those damned books
-		icon.icon:SetVertexColor(0,1,1)
+		minimap.icon:SetVertexColor(0,1,1)
+		map.icon:SetVertexColor(0,1,1)
 	end
 end
-
-function TL:GetTextureByType(type)
-	return TL.Types[type]
-end
-
+-- Iterate over the data 
 function TL:IterateData()
 	for k, value in pairs(TL.Data) do
 		local z = k
-		print(z)
 		for type, point in pairs(value) do
 			for _, tbl in ipairs(point) do
-				TL:SetPNJ(z, tbl.xOff, tbl.yOff,type)
+				TL:SetPOI(z, tbl.xOff, tbl.yOff,type)
 			end
 		end
 	end

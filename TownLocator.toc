@@ -1,7 +1,7 @@
-## Interface: 30200
+## Interface: 30300
 ## Title: Town|cfe87b23fLocator|r
 ## Author: Soeters
-## Version: r1
+## Version: r1-release
 ## Notes: Helps you find PNJ in capitals
 
 libs\Astronomer\Astronomer.xml
