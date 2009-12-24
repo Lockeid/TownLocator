@@ -2,7 +2,8 @@
 ## Title: Town|cfe87b23fLocator|r
 ## Author: Soeters
 ## Version: r1-release
-## Notes: Helps you find PNJ in capitals
+## Notes: Helps you find POI in capitals
+## OptionalDeps: TomTom
 
 libs\Astronomer\Astronomer.xml
 
