@@ -5,7 +5,7 @@
 ## Notes: Helps you find POI in capitals
 ## OptionalDeps: TomTom
 
-libs\Astronomer\Astronomer.xml
+libs\Astrolabe\Load.xml
 
 Locales.lua
 Data.lua
