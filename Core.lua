@@ -52,7 +52,14 @@ TL.Types = {
 }
 
 -- Some utils functions
-	local conts = {"northrend","kalimdor","azeroth","expansion01", ""}
+	local conts = {
+		northrend = true,
+		kalimdor = true,
+		azeroth= true,
+		expansion01 = true,
+		crystalsongforest = true,
+		[""] = true
+	}
 	-- All this is stolen from Tuhljin's Astronomer
 
     local ZoneIcons = {};
@@ -185,7 +192,8 @@ Astrolabe:Register_OnEdgeChanged_Callback(OnEdge, true)
 
 -- Scripts handlers
 local function OnEnter(self)
-	GameTooltip:AddLine(self.type)
+	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
+	GameTooltip:SetText(self.type)
 	GameTooltip:Show()
 end
 local function OnLeave(self)
@@ -252,6 +260,7 @@ function TL:CreateIcons(type,zone)
 	map:SetWidth((type == "Barber" and 60) or 20)
 	map:SetHeight((type == "Barber" and 30) or 20)
 	map:RegisterForClicks("RightButtonUp")
+	map:SetFrameStrata("HIGH")
 	map.type = type
 	map.micon = minimap
 	map.kind = "MapIcon"
@@ -322,13 +331,15 @@ end
 
 
 function TL:WORLD_MAP_UPDATE()
-	local mapFileName = strlower(GetMapInfo()) or ""
+	local mapFileName = strlower(GetMapInfo() or "")
 	local hide = false
+	--[[
 	for _,cont in ipairs(conts) do
 		if mapFileName == cont then
 			hide = true
 		end
-	end
+	end--]]
+	if conts[mapFileName] then hide = true end
 	for _, icon in ipairs(mapPool) do 
 		Astrolabe:PlaceIconOnWorldMap(WorldMapDetailFrame, icon, unpack(icon.coords))	
 		if(hide == true) then
